@@ -1,0 +1,16 @@
+version: '3.8'
+services:
+  backend:
+    container_name: backend
+    image: oven/bun
+    volumes:
+      - .:/workdir
+    working_dir: /workdir
+    ports:
+      - 3000:3000
+    command: >
+      bash -c "
+        bun run start
+      "
+    tty: true
+    stdin_open: true
