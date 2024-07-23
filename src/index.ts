@@ -17,7 +17,8 @@ app.use(cors())
 app.use(express.json())
 
 // controllers
-app.post('/', async (req: Request, res: Response) => await lineHandler(req, res))
+app.all('/', async (req: Request, res: Response) => await lineHandler(req, res))
+app.all('/hello', async (req: Request, res: Response) => res.send('🙋‍♂️ Hello'))
 
 // development port
 app.listen(port, () => console.log(`Server at http://localhost:${port}`))
