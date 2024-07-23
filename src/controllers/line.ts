@@ -29,9 +29,12 @@ const lineHandler = async (req: Request, res: Response): Promise<any> => {
       // }
     }
 
-    return responseFormatHttp(req, res, EResponseStatus.SUCCESS, { msg: 'lineHandler 🟢 Success' })
+    return { msg: 'lineHandler 🟢 Success' }
+
+    // return responseFormatHttp(req, res, EResponseStatus.SUCCESS, { msg: 'lineHandler 🟢 Success' })
   } catch (error) {
-    return responseFormatHttp(req, res, EResponseStatus.ERROR, { msg: 'lineHandler 🔴 Error', err: error })
+    return { msg: 'lineHandler 🔴 Error', err: error }
+    // return responseFormatHttp(req, res, EResponseStatus.ERROR, { msg: 'lineHandler 🔴 Error', err: error })
   }
 }
 
