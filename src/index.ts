@@ -18,7 +18,7 @@ app.use(express.json())
 
 // controllers
 app.get('/', async (req: Request, res: Response) => {
-  return await lineHandler(req, res)
+  res.status(200).json('Welcome, your app is working well')
 })
 // app.all('/', async (req: Request, res: Response) => await lineHandler(req, res))
 
