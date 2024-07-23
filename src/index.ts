@@ -19,8 +19,7 @@ app.use(express.json())
 // controllers
 app.get('/', async (req: Request, res: Response) => {
   const call = await lineHandler(req, res)
-  console.log('🚀 ~ app.get ~ call:', call)
-  return call
+  res.status(200).send(call)
   // console.log('🚀 ~ app.get ~ call:', call)
 
   // res.status(200).send(call)
