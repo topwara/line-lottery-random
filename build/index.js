@@ -264,7 +264,3 @@ var server = Bun.serve({
   }
 });
 console.log(`Listening on http://localhost:${server.port} ...`);
-var src_default = server;
-export {
-  src_default as default
-};
