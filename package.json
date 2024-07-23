@@ -4,7 +4,8 @@
   "description": "Notification of lottery random number draws in Thailand Before the 1st and 16th of every month.",
   "main": "index.js",
   "scripts": {
-    "start": "bun --hot run src/index.ts"
+    "start": "bun --hot run src/index.ts",
+    "build": "bun build --target=bun src/index.ts --outdir ./build"
   },
   "keywords": [],
   "author": "",
