@@ -25,9 +25,9 @@ const lineHandler = async (req: Request, res: Response): Promise<any> => {
 
           const lineMessage = generateLineMessage(randomNumbers)
 
-          const sendLine = await sendLineMessage('reply', lineMessage, replyToken)
+          // const sendLine = await sendLineMessage('reply', lineMessage, replyToken)
 
-          if (typeof sendLine === 'string') continue
+          // if (typeof sendLine === 'string') continue
         }
       }
     }
