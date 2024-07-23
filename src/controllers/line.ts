@@ -1,28 +1,28 @@
+import axios from 'axios'
+import { Request, Response } from 'express'
 import { EResponseStatus, responseFormatHttp } from '../http'
 
-const lineHandler = async (req: Request): Promise<any> => {
-  try {
-    console.log('🟡 lineHandler => ', req)
+const lineHandler = async (req: Request, res: Response): Promise<any> => {
+  console.log('🟡 lineHandler => ', req)
 
+  try {
     const randomNumbers = generateLotteryNumbers()
 
     const lineMessage = generateLineMessage(randomNumbers)
 
-    const sendBoardCast = await fetch('https://api.line.me/v2/bot/message/broadcast', {
+    const axiosSend = await axios.post('https://api.line.me/v2/bot/message/broadcast', lineMessage, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${process.env['LINETOKEN']}`,
       },
-      body: lineMessage,
     })
 
-    if (sendBoardCast.status !== 200)
-      return responseFormatHttp(EResponseStatus.WARNING, { msg: 'Warning /message/broadcast' })
+    if (axiosSend.status !== 200) return responseFormatHttp(req, res, EResponseStatus.WARNING, { msg: 'Send Failed' })
 
-    return responseFormatHttp(EResponseStatus.SUCCESS, { msg: 'Success' })
+    return responseFormatHttp(req, res, EResponseStatus.SUCCESS, { msg: 'Success' })
   } catch (error) {
-    return responseFormatHttp(EResponseStatus.ERROR, { msg: 'Error' })
+    return responseFormatHttp(req, res, EResponseStatus.ERROR, { msg: 'Error' })
   }
 }
 

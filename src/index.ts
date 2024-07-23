@@ -1,15 +1,25 @@
-import lineHandler from './api/line'
-import { EResponseStatus, responseFormatHttp } from './http'
+// Lib
+import cors from 'cors'
+import express, { Request, Response } from 'express'
+require('dotenv').config()
 
-export const server = Bun.serve({
-  port: 3000,
-  async fetch(req) {
-    const { pathname } = new URL(req.url)
+// Include
+import lineHandler from './controllers/line'
 
-    if (pathname === '/') return await lineHandler(req)
+// ==========
 
-    return responseFormatHttp(EResponseStatus.SUCCESS, {})
-  },
-})
+//app
+const app = express()
+const port = process.env.PORT
 
-console.log(`Listening on http://localhost:${server.port} ...`)
+//middlewares
+app.use(cors())
+app.use(express.json())
+
+// controllers
+app.post('/', async (req: Request, res: Response) => await lineHandler(req, res))
+
+// development port
+app.listen(port, () => console.log(`Server at http://localhost:${port}`))
+
+export default app

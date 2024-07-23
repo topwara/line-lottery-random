@@ -1,3 +1,5 @@
+import express, { Request, Response } from 'express'
+
 export const ACCESS_CONTROL_ALLOW_HEADERS = {
   'Access-Control-Allow-Headers': '*',
   'Access-Control-Allow-Origin': '*',
@@ -27,26 +29,31 @@ export const ResponseStatusCode = {
   [EResponseStatus.ERROR]: 500,
 }
 
-// Response Format : for Http
-export const responseFormatHttp = <T>(status: EResponseStatus, data: T & any): ResponseFormat<any> => {
-  const bodyResponse = JSON.stringify(
-    {
-      res_code: ResponseTypeCode[status],
-      res_desc: status !== EResponseStatus.SUCCESS ? data.error : status,
-      ...data,
-    },
-    null,
-    2,
-  )
+export const responseFormatHttp = <T>(
+  req: Request | any,
+  res: Response,
+  status: EResponseStatus,
+  data: T & any,
+): ResponseFormat<any> => {
+  res.set('Access-Control-Allow-Origin', '*')
+  res.set('Access-Control-Allow-Methods', 'GET, POST')
+  res.set('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization')
 
-  const initResponse = {
-    status: ResponseStatusCode[status],
-    headers: {
-      'Access-Control-Allow-Origin': '*',
-      'Access-Control-Allow-Methods': ['GET', 'POST'],
-      'Access-Control-Allow-Headers': ['Origin', 'X-Requested-With', 'Content-Type', 'Accept', 'Authorization'],
-    },
+  if (req.method === 'OPTIONS') {
+    res.status(204)
+    res.send({
+      res_code: '99',
+      res_desc: 'Intenal Server Error',
+    })
+    return res
   }
 
-  return new Response(bodyResponse, initResponse)
+  res.status(ResponseStatusCode[status])
+  res.send({
+    res_code: ResponseTypeCode[status],
+    res_desc: status !== EResponseStatus.SUCCESS ? data.error : status,
+    ...data,
+  })
+
+  return res
 }
