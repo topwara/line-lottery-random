@@ -18,7 +18,7 @@ app.use(express.json())
 
 // controllers
 app.get('/', async (req: Request, res: Response) => {
-  await lineHandler(req, res)
+  return await lineHandler(req, res)
 })
 // app.all('/', async (req: Request, res: Response) => await lineHandler(req, res))
 
