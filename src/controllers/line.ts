@@ -12,24 +12,20 @@ const lineHandler = async (req: Request, res: Response): Promise<any> => {
     const lineEvents = req?.body?.events as Record<string, any>[]
 
     if (lineEvents.length > 0) {
+      console.log('adsadsadsadsadsadsadsadsadsadsadsadsads')
+
       //
-      for await (const { type, message, replyToken } of lineEvents) {
-        const texts = ['Random', 'random', 'หวย', 'สุ่ม']
-
-        const isMatchText = texts.indexOf(message['text']) > -1
-
-        const isReplyPrivate = type === 'message' && message['type'] === 'text' && isMatchText
-
-        // if (isReplyPrivate) {
-        //   const randomNumbers = generateLotteryNumbers()
-
-        //   const lineMessage = generateLineMessage(randomNumbers)
-
-        //   // const sendLine = await sendLineMessage('reply', lineMessage, replyToken)
-
-        //   // if (typeof sendLine === 'string') continue
-        // }
-      }
+      // for await (const { type, message, replyToken } of lineEvents) {
+      //   const texts = ['Random', 'random', 'หวย', 'สุ่ม']
+      //   const isMatchText = texts.indexOf(message['text']) > -1
+      //   const isReplyPrivate = type === 'message' && message['type'] === 'text' && isMatchText
+      //   // if (isReplyPrivate) {
+      //   //   const randomNumbers = generateLotteryNumbers()
+      //   //   const lineMessage = generateLineMessage(randomNumbers)
+      //   //   // const sendLine = await sendLineMessage('reply', lineMessage, replyToken)
+      //   //   // if (typeof sendLine === 'string') continue
+      //   // }
+      // }
     }
 
     return responseFormatHttp(req, res, EResponseStatus.SUCCESS, { msg: 'lineHandler 🟢 Success' })
