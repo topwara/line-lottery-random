@@ -1,7 +1,7 @@
 import lineHandler from './api/line'
 import { EResponseStatus, responseFormatHttp } from './http'
 
-const server = Bun.serve({
+export const server = Bun.serve({
   port: 3000,
   async fetch(req) {
     const { pathname } = new URL(req.url)

@@ -2,23 +2,23 @@ import { EResponseStatus, responseFormatHttp } from '../http'
 
 const lineHandler = async (req: Request): Promise<any> => {
   try {
-    console.log('🟡 req => ', req)
+    console.log('🟡 lineHandler => ', req)
 
     const randomNumbers = generateLotteryNumbers()
 
     const lineMessage = generateLineMessage(randomNumbers)
 
-    const sendBoardCast = await fetch('https://api.line.me/v2/bot/message/broadcast', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${process.env['LINETOKEN']}`,
-      },
-      body: lineMessage,
-    })
+    // const sendBoardCast = await fetch('https://api.line.me/v2/bot/message/broadcast', {
+    //   method: 'POST',
+    //   headers: {
+    //     'Content-Type': 'application/json',
+    //     Authorization: `Bearer ${process.env['LINETOKEN']}`,
+    //   },
+    //   body: lineMessage,
+    // })
 
-    if (sendBoardCast.status !== 200)
-      return responseFormatHttp(EResponseStatus.WARNING, { msg: 'Warning /message/broadcast' })
+    // if (sendBoardCast.status !== 200)
+    //   return responseFormatHttp(EResponseStatus.WARNING, { msg: 'Warning /message/broadcast' })
 
     return responseFormatHttp(EResponseStatus.SUCCESS, { msg: 'Success' })
   } catch (error) {
