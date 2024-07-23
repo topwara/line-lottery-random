@@ -17,7 +17,7 @@ app.use(cors())
 app.use(express.json())
 
 // controllers
-app.get('/', async (req: Request, res: Response) => {
+app.post('/', async (req: Request, res: Response) => {
   const call = await lineHandler(req, res)
   res.status(200).send(call)
   // console.log('🚀 ~ app.get ~ call:', call)
