@@ -34,7 +34,7 @@ const lineHandler = async (req: Request, res: Response): Promise<any> => {
 
     return responseFormatHttp(req, res, EResponseStatus.SUCCESS, { msg: 'Success' })
   } catch (error) {
-    return responseFormatHttp(req, res, EResponseStatus.ERROR, { msg: 'Error' })
+    return responseFormatHttp(req, res, EResponseStatus.ERROR, { msg: 'Error', val: error })
   }
 }
 
