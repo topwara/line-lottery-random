@@ -8,36 +8,36 @@ import { EResponseStatus, responseFormatHttp } from '../http'
 // ==========
 
 const lineHandler = async (req: Request, res: Response): Promise<any> => {
-  console.log('🙋‍♂️ Hello ', req)
+  return 'HELP ME PLEAS lineHandler'
 
-  try {
-    const lineEvents = req?.body?.events as Record<string, any>[]
+  // try {
+  //   const lineEvents = req?.body?.events as Record<string, any>[]
 
-    if (lineEvents.length > 0) {
-      //
-      for await (const { type, message, replyToken } of lineEvents) {
-        const texts = ['Random', 'random', 'หวย', 'สุ่ม']
+  //   if (lineEvents.length > 0) {
+  //     //
+  //     for await (const { type, message, replyToken } of lineEvents) {
+  //       const texts = ['Random', 'random', 'หวย', 'สุ่ม']
 
-        const isMatchText = texts.indexOf(message['text']) > -1
+  //       const isMatchText = texts.indexOf(message['text']) > -1
 
-        const isReplyPrivate = type === 'message' && message['type'] === 'text' && isMatchText
+  //       const isReplyPrivate = type === 'message' && message['type'] === 'text' && isMatchText
 
-        if (isReplyPrivate) {
-          const randomNumbers = generateLotteryNumbers()
+  //       if (isReplyPrivate) {
+  //         const randomNumbers = generateLotteryNumbers()
 
-          const lineMessage = generateLineMessage(randomNumbers)
+  //         const lineMessage = generateLineMessage(randomNumbers)
 
-          const sendLine = await sendLineMessage('reply', lineMessage, replyToken)
+  //         const sendLine = await sendLineMessage('reply', lineMessage, replyToken)
 
-          if (typeof sendLine === 'string') continue
-        }
-      }
-    }
+  //         if (typeof sendLine === 'string') continue
+  //       }
+  //     }
+  //   }
 
-    return responseFormatHttp(req, res, EResponseStatus.SUCCESS, { msg: 'Success' })
-  } catch (error) {
-    return responseFormatHttp(req, res, EResponseStatus.ERROR, { msg: 'Error', val: error })
-  }
+  //   return responseFormatHttp(req, res, EResponseStatus.SUCCESS, { msg: 'Success' })
+  // } catch (error) {
+  //   return responseFormatHttp(req, res, EResponseStatus.ERROR, { msg: 'Error', val: error })
+  // }
 }
 
 export default lineHandler
