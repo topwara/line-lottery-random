@@ -15,28 +15,28 @@ const lineHandler = async (req: Request, res: Response): Promise<any> => {
     if (lineEvents?.length > 0) {
       console.log('OH MY GODS')
 
-      //
-      // for await (const { type, message, replyToken } of lineEvents) {
-      //   const texts = ['Random', 'random', 'หวย', 'สุ่ม']
-      //   const isMatchText = texts.indexOf(message['text']) > -1
-      //   const isReplyPrivate = type === 'message' && message['type'] === 'text' && isMatchText
-      //   // if (isReplyPrivate) {
-      //   //   const randomNumbers = generateLotteryNumbers()
-      //   //   const lineMessage = generateLineMessage(randomNumbers)
-      //   //   // const sendLine = await sendLineMessage('reply', lineMessage, replyToken)
-      //   //   // if (typeof sendLine === 'string') continue
-      //   // }
-      // }
+      for await (const { type, message, replyToken } of lineEvents) {
+        const texts = ['Random', 'random', 'หวย', 'สุ่ม']
+
+        const isMatchText = texts.indexOf(message['text']) > -1
+
+        const isReplyPrivate = type === 'message' && message['type'] === 'text' && isMatchText
+
+        if (isReplyPrivate) {
+          const randomNumbers = generateLotteryNumbers()
+
+          const lineMessage = generateLineMessage(randomNumbers)
+
+          const sendLine = await sendLineMessage('reply', lineMessage, replyToken)
+
+          if (typeof sendLine === 'string') continue
+        }
+      }
     }
 
-    const date = new Date().toISOString()
-
-    return { msg: 'lineHandler 🟢 Success' + date }
-
-    // return responseFormatHttp(req, res, EResponseStatus.SUCCESS, { msg: 'lineHandler 🟢 Success' })
+    return responseFormatHttp(req, res, EResponseStatus.SUCCESS, { msg: 'lineHandler 🟢 Success' })
   } catch (error) {
-    return { msg: 'lineHandler 🔴 Error', err: error }
-    // return responseFormatHttp(req, res, EResponseStatus.ERROR, { msg: 'lineHandler 🔴 Error', err: error })
+    return responseFormatHttp(req, res, EResponseStatus.ERROR, { msg: 'lineHandler 🔴 Error', err: error })
   }
 }
 

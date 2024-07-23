@@ -21,7 +21,9 @@ app.all('/', async (req: Request, res: Response) => {
   res.header('Cache-Control', 'no-cache, no-store, must-revalidate')
 
   const call = await lineHandler(req, res)
-  res.status(200).send(call)
+  // res.status(200).send(call)
+
+  return call
   // console.log('🚀 ~ app.get ~ call:', call)
 
   // res.status(200).send(call)
