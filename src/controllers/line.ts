@@ -1,24 +1,36 @@
-import axios from 'axios'
+// Lib
 import { Request, Response } from 'express'
+import axios, { AxiosResponse } from 'axios'
+
+// Include
 import { EResponseStatus, responseFormatHttp } from '../http'
 
+// ==========
+
 const lineHandler = async (req: Request, res: Response): Promise<any> => {
-  console.log('🟡 lineHandler => ', req)
-
   try {
-    const randomNumbers = generateLotteryNumbers()
+    const lineEvents = req?.body?.events as Record<string, any>[]
 
-    const lineMessage = generateLineMessage(randomNumbers)
+    if (lineEvents.length > 0) {
+      //
+      for await (const { type, message, replyToken } of lineEvents) {
+        const texts = ['Random', 'random', 'หวย', 'สุ่ม']
 
-    const axiosSend = await axios.post('https://api.line.me/v2/bot/message/broadcast', lineMessage, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${process.env['LINETOKEN']}`,
-      },
-    })
+        const isMatchText = texts.indexOf(message['text']) > -1
 
-    if (axiosSend.status !== 200) return responseFormatHttp(req, res, EResponseStatus.WARNING, { msg: 'Send Failed' })
+        const isReplyPrivate = type === 'message' && message['type'] === 'text' && isMatchText
+
+        if (isReplyPrivate) {
+          const randomNumbers = generateLotteryNumbers()
+
+          const lineMessage = generateLineMessage(randomNumbers)
+
+          const sendLine = await sendLineMessage('reply', lineMessage, replyToken)
+
+          if (typeof sendLine === 'string') continue
+        }
+      }
+    }
 
     return responseFormatHttp(req, res, EResponseStatus.SUCCESS, { msg: 'Success' })
   } catch (error) {
@@ -34,6 +46,35 @@ type TLotteryNumbers = {
   sixDigit: string
   threeDigit: string[]
   twoDigit: string
+}
+
+const sendLineMessage = async (
+  lineSendType: 'broadcast' | 'reply' | null,
+  lineMessageObj: Record<string, any>,
+  lineReplyToken: string,
+): Promise<AxiosResponse | string> => {
+  //
+
+  const lineToken = process.env['LINETOKEN']
+
+  const lineUrl = {
+    reply: 'https://api.line.me/v2/bot/message/reply',
+    broadcast: 'https://api.line.me/v2/bot/message/broadcast',
+  }[lineSendType]
+
+  const lineMessage = {
+    replyToken: lineSendType === 'reply' ? lineReplyToken : undefined,
+    messages: lineMessageObj['messages'],
+  }
+
+  const axiosSend = await axios.post(lineUrl, lineMessage, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${lineToken}` },
+  })
+
+  if (axiosSend.status !== 200) return 'Send Line Message Failed'
+
+  return axiosSend
 }
 
 const getRandomNumber = (length: number): string => {
@@ -54,10 +95,10 @@ const generateLotteryNumbers = (): TLotteryNumbers => {
   return result
 }
 
-const generateLineMessage = (randomNumbersObj: TLotteryNumbers): string => {
+const generateLineMessage = (randomNumbersObj: TLotteryNumbers) => {
   const { sixDigit, threeDigit, twoDigit } = randomNumbersObj
 
-  const message = {
+  const response = {
     messages: [
       {
         type: 'flex',
@@ -244,5 +285,5 @@ const generateLineMessage = (randomNumbersObj: TLotteryNumbers): string => {
     ],
   }
 
-  return JSON.stringify(message, null, 2)
+  return response
 }
