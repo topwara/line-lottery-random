@@ -29,7 +29,9 @@ const lineHandler = async (req: Request, res: Response): Promise<any> => {
       // }
     }
 
-    return { msg: 'lineHandler 🟢 Success' }
+    const date = new Date().toISOString()
+
+    return { msg: 'lineHandler 🟢 Success' + date }
 
     // return responseFormatHttp(req, res, EResponseStatus.SUCCESS, { msg: 'lineHandler 🟢 Success' })
   } catch (error) {
