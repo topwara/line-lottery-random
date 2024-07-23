@@ -261,7 +261,7 @@ const generateLineMessage = (randomNumbersObj: TLotteryNumbers) => {
               {
                 type: 'box',
                 layout: 'horizontal',
-                contents: [],
+                contents: [] as any,
                 margin: 'md',
                 width: '90%',
                 justifyContent: 'center',

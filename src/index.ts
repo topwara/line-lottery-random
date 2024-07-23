@@ -17,8 +17,8 @@ app.use(cors())
 app.use(express.json())
 
 // controllers
-app.get('/', (req, res) => {
-  res.status(200).json('Welcome, your app is working well')
+app.get('/', async (req: Request, res: Response) => {
+  await lineHandler(req, res)
 })
 // app.all('/', async (req: Request, res: Response) => await lineHandler(req, res))
 
