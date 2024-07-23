@@ -8,7 +8,7 @@ import { EResponseStatus, responseFormatHttp } from '../http'
 // ==========
 
 const lineHandler = async (req: Request, res: Response): Promise<any> => {
-  return 'HELP ME PLEAS lineHandler'
+  return responseFormatHttp(req, res, EResponseStatus.SUCCESS, { msg: 'HELP ME PLEASE LINE HANDLER' })
 
   // try {
   //   const lineEvents = req?.body?.events as Record<string, any>[]
