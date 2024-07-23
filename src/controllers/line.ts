@@ -11,8 +11,9 @@ const lineHandler = async (req: Request, res: Response): Promise<any> => {
   try {
     const lineEvents = req?.body?.events as Record<string, any>[]
 
-    if (lineEvents.length > 0) {
-      console.log('adsadsadsadsadsadsadsadsadsadsadsadsads')
+    console.log('WHAT THE ......')
+    if (lineEvents?.length > 0) {
+      console.log('OH MY GODS')
 
       //
       // for await (const { type, message, replyToken } of lineEvents) {
